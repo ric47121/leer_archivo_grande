@@ -10,7 +10,12 @@ $buscar = (isset($_REQUEST['code']))? $_REQUEST['code']:'01180';
 if(intval($buscar) == 0) 
 die(json_encode(['status'=>'no valido']));
 
-$arch = file_get_contents('CPdescarga_indices.txt');
+if(intval($buscar) %2==0){
+	$arch = file_get_contents('CPdescarga_indices_pares.txt');
+}else{
+	$arch = file_get_contents('CPdescarga_indices_impares.txt');
+}
+
 $lines = explode("\n", $arch);
 
 $arr = [];
