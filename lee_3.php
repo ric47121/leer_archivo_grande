@@ -1,0 +1,194 @@
+<?php
+
+$arch = file_get_contents_utf8('CPdescarga.txt');
+
+$lines = explode("\n", $arch);
+
+$buscar = (isset($_REQUEST['code']))? $_REQUEST['code']:'01180'; 
+// $buscar = $_REQUEST['code'];
+// die($buscar);
+
+// {"zip_code":"01050","locality":"CIUDAD DE MEXICO","federal_entity":{"key":9,"name":"CIUDAD DE MEXICO","code":null},"settlements":[{"key":16,"name":"EX-HACIENDA DE GUADALUPE CHIMALISTAC","zone_type":"URBANO","settlement_type":{"name":"Colonia"}}],"municipality":{"key":10,"name":"ALVARO OBREGON"}}
+
+// d_codigo	|d_asenta	|d_tipo_asenta	|D_mnpio			|d_estado			|d_ciudad			|d_CP		|c_estado	|c_oficina	|c_CP	|c_tipo_asenta	|c_mnpio	|id_asenta_cpcons	|d_zona		|c_cve_ciudad
+// 0 		| 1 		| 2 			| 3 				| 4 				| 5					| 6 		| 7 		| 8 		| 9 	| 10 			| 11 		| 12				| 13 		| 14
+// 01050	|Ex-Haci..	|Colonia		|Álvaro Obregón		|Ciudad de México	|Ciudad de México	|01001		|09			|01001		|		|09				|010 		|0016 				|Urbano 	|01
+
+// 01180	|Carola		|Colonia		|Álvaro Obregón		|Ciudad de México	|Ciudad de México	|01131		|09			|01131		|		|09				|010 		|0076 				|Urbano 	|01
+// 01180	|8 de Agosto|Colonia		|Álvaro Obregón		|Ciudad de México	|Ciudad de México	|01131		|09			|01131		|		|09				|010 		|0077 				|Urbano 	|01
+// 01180	|San Pedro..|Colonia		|Álvaro Obregón		|Ciudad de México	|Ciudad de México	|01131		|09			|01131		|		|09				|010 		|0078 				|Urbano 	|01
+
+
+$arr = [];
+
+$encontro = false;
+for ($i=0; $i < count($lines); $i++) { 
+	$parts = explode("|", $lines[$i]);
+	if(trim($parts[0]) == $buscar ){
+		$encontro = true;
+		break;
+	}
+}
+
+// echo $i;
+// return;
+
+if(!$encontro){ echo "no encontro "; return;}
+
+// for ($i=0; $i < count($lines); $i++) { 
+	// code...
+	
+
+	// if(stristr($lines[$i], $buscar)){
+	// if(stristr($parts[0], $buscar)){
+	$pos=$i;
+	// $parts = explode("|", $lines[$i]);
+	// $viendo = trim($parts[0]);
+	do{
+
+		$parts = explode("|", $lines[$pos]);
+		$viendo = trim($parts[0]);
+
+		// if(trim($parts[0]) != $buscar)
+		// print_r($parts);
+		// echo $parts[4];
+		// die();
+
+		$arr['zip_code'] = $buscar;
+		$arr['locality'] = procesar_str($parts[5]);
+		// $arr['locality'] = utf8_encode("uuñ");
+		
+		$federal_entity = [];
+		$federal_entity['key'] = procesar_int($parts[7]);
+		$federal_entity['name'] = procesar_str($parts[4]);
+		$federal_entity['code'] = procesar_int($parts[9]);
+
+		$arr['federal_entity'] = $federal_entity;
+
+		$settlements = [];
+
+		$j= $pos;
+		$mirando = $viendo;
+		while($mirando == $buscar && $j < count($lines)){
+			
+			
+			$data = [];
+			$data['key'] = procesar_int($parts[12]);
+			$data['name'] = procesar_str($parts[1]);
+			$data['zone_type'] = procesar_str($parts[13]);
+
+
+			$settlement_type = [];
+			$settlement_type['name'] = procesar_str_sin_uppercase($parts[2]);
+			$data['settlement_type'] = $settlement_type;
+
+			$settlements[] = $data;
+			$j++;
+
+			$parts = explode("|", $lines[$j]);
+			$mirando = trim($parts[0]);
+
+		}
+
+
+		$arr['settlements'] = $settlements;
+
+		$municipality = [];
+		$municipality['key'] = procesar_int($parts[11]);
+		$municipality['name'] = procesar_str($parts[3]);
+
+		$arr['municipality'] = $municipality;
+
+		// echo "si esta";
+		
+		// return;
+
+		$pos++;
+	}while($viendo == $buscar && $pos < count($lines));
+
+	echo json_encode($arr);
+
+// }
+
+// echo "no esta";
+
+
+// echo $arch;
+
+// print_r($lines)
+
+function file_get_contents_utf8($fn) {
+
+     $content = file_get_contents($fn);
+
+      return mb_convert_encoding($content, 'UTF-8',
+
+          mb_detect_encoding($content, 'UTF-8, ISO-8859-1', true));
+
+}
+
+
+function procesar_int($s){
+		return	($s)? intval($s):null;
+}
+
+function procesar_str($cadena){
+	$cadena = eliminar_acentos($cadena);
+	$cadena = strtoupper($cadena);
+	$cadena = utf8_encode($cadena);
+
+	return ($cadena);
+}
+
+function procesar_str_sin_uppercase($cadena){
+	$cadena = eliminar_acentos($cadena);
+	// $cadena = strtoupper($cadena);
+	$cadena = utf8_encode($cadena);
+
+	return ($cadena);
+}
+
+function eliminar_acentos($cadena){
+		
+		//Reemplazamos la A y a
+		$cadena = str_replace(
+		array('Á', 'À', 'Â', 'Ä', 'á', 'à', 'ä', 'â', 'ª'),
+		array('A', 'A', 'A', 'A', 'a', 'a', 'a', 'a', 'a'),
+		$cadena
+		);
+
+		//Reemplazamos la E y e
+		$cadena = str_replace(
+		array('É', 'È', 'Ê', 'Ë', 'é', 'è', 'ë', 'ê'),
+		array('E', 'E', 'E', 'E', 'e', 'e', 'e', 'e'),
+		$cadena );
+
+		//Reemplazamos la I y i
+		$cadena = str_replace(
+		array('Í', 'Ì', 'Ï', 'Î', 'í', 'ì', 'ï', 'î'),
+		array('I', 'I', 'I', 'I', 'i', 'i', 'i', 'i'),
+		$cadena );
+
+		//Reemplazamos la O y o
+		$cadena = str_replace(
+		array('Ó', 'Ò', 'Ö', 'Ô', 'ó', 'ò', 'ö', 'ô'),
+		array('O', 'O', 'O', 'O', 'o', 'o', 'o', 'o'),
+		$cadena );
+
+		//Reemplazamos la U y u
+		$cadena = str_replace(
+		array('Ú', 'Ù', 'Û', 'Ü', 'ú', 'ù', 'ü', 'û'),
+		array('U', 'U', 'U', 'U', 'u', 'u', 'u', 'u'),
+		$cadena );
+
+		//Reemplazamos la N, n, C y c
+		$cadena = str_replace(
+		array('Ñ', 'ñ', 'Ç', 'ç'),
+		array('N', 'n', 'C', 'c'),
+		$cadena
+		);
+		
+		return $cadena;
+	}
+
+?>

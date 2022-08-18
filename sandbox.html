@@ -1,0 +1,342 @@
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- Latest compiled and minified Bootstrap CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<!-- <link rel="stylesheet" href="../css/bootstrap.min.darkly.css" > -->
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+
+<style>
+body {
+padding-top: 1em;
+}	
+</style> 
+  </head>
+
+<div class="container-fluid">
+
+  <form>
+    
+    <div class="form-group">
+      <label for="zip_code">zip codes:</label>
+      <input type="text" class="form-control" id="zip_codes" placeholder="server" value="01180,01020,01010">      
+    
+      <label for="zip_code">zip code: <small>ultimos (31604, 99960, 99998)</small></label>
+      <input type="text" class="form-control" id="zip_code" placeholder="server" value="01180">      
+    </div>   
+  </form>
+
+  <button type="button" class="btn btn-primary btn-sm" onclick="sasa()">Run</button>
+  <!-- <button type="button" class="btn btn-primary btn-sm" onclick='$("#myModalDetalle").modal("show")'>modal</button> -->
+<br>
+<br>
+
+<div>
+
+
+<div class="row" style="border: 1px solid red;">
+     <div class="col">
+       <!-- Your first column here -->
+       <input type="text" class="form-control" id="server_1" placeholder="server_1" value="https://jobs.backbonesystems.io/api/zip-codes/">      
+               
+       Server 1 <button type="button" class="btn btn-primary btn-sm" onclick="getDatos_1()">Run</button>
+      <h6><small>php ? | laravel ?</small></h6>
+      <div class="form-group">
+        <label for="result_1">Result:</label>
+        <textarea class="form-control" style="font-size: 0.8rem;" rows="10" id="result_1"></textarea>
+      </div>
+
+     </div>
+
+     <div class="col">
+       <!-- Your second column here -->
+       <input type="text" class="form-control" id="server_2"  placeholder="server_1" value="http://143.244.163.122:8099/api/zip-codes/">  
+       Server 2 <button type="button" class="btn btn-primary btn-sm" onclick="getDatos_2()">Run</button>
+       
+       <button type="button" class="btn btn-primary btn-sm" onclick="getAllDatos_2()">Run All</button>
+        <h6><small>php 7.2 | laravel 5.8 | Redis Si |</small></h6>
+
+      <div class="form-group">
+        <label for="result_2">Result:</label>
+        <textarea class="form-control" style="font-size: 0.8rem;" rows="10" id="result_2"></textarea>
+      </div>
+
+     </div>
+
+     <div class="col">
+       <!-- Your second column here -->
+       <input type="text" class="form-control" id="server_3"  placeholder="server_3" value="http://127.0.0.1:8099/api/zip-codes/">  
+       Server 3 <button type="button" class="btn btn-primary btn-sm" onclick="getDatos_3()">Run</button>
+       <h6><small>php 7.2 | laravel 5.8 | Redis Si |</small></h6>
+      <div class="form-group">
+        <label for="result_2">Result:</label>
+        <textarea class="form-control " style="font-size: 0.8rem;" rows="10" id="result_3"></textarea>
+      </div>
+
+     </div>
+
+     <div class="col">
+       <!-- Your second column here -->
+       <input type="text" class="form-control" id="server_4"  placeholder="server_4" value="http://127.0.0.1/challenge/leer_archivo_grande/lee_4.php?code=">  
+       Server 4 <button type="button" class="btn btn-primary btn-sm" onclick="getDatos_x(4)">Run</button>
+       <h6><small>php 7.2 | sin laravel | Redis No | Bus. Secuencial</small></h6>
+      <div class="form-group">
+        <label for="result_4">Result:</label>
+        <textarea class="form-control " style="font-size: 0.8rem;" rows="10" id="result_4"></textarea>
+      </div>
+
+     </div>
+
+     
+
+</div>
+
+<div class="row">
+     <div class="col">
+       <!-- Your first column here -->
+       <input type="text" class="form-control" id="server_5" placeholder="server_5" value="http://127.0.0.1/challenge/leer_archivo_grande/lee_hola.php?code=">      
+
+       Server 5 <button type="button" class="btn btn-primary btn-sm" onclick="getDatos_x(5)">Run</button>
+      <h6><small>php ? | laravel ?</small></h6>
+      <div class="form-group">
+        <label for="result_5">Result:</label>
+        <textarea class="form-control" style="font-size: 0.8rem;" rows="10" id="result_5"></textarea>
+      </div>
+
+     </div>
+
+     <div class="col">
+       <!-- Your second column here -->
+       <input type="text" class="form-control" id="server_6"  placeholder="server_6" value="http://127.0.0.1/challenge/leer_archivo_grande/lee_4_with_binary_search.php?code=">  
+       Server 6 <button type="button" class="btn btn-primary btn-sm" onclick="getDatos_x(6)">Run</button>
+       
+       <h6><small>php 7.2 | laravel No </small></h6>
+
+      <div class="form-group">
+        <label for="result_6">Result:</label>
+        <textarea class="form-control" style="font-size: 0.8rem;" rows="10" id="result_6"></textarea>
+      </div>
+
+     </div>
+
+     <div class="col">
+       <!-- Your second column here -->
+       <!-- <input type="text" class="form-control" id="server_3"  placeholder="server_3" value="http://127.0.0.1:8099/api/zip-codes/">   -->
+       <input type="text" class="form-control" id="server_7"  placeholder="server_7" value="http://127.0.0.1/challenge/leer_archivo_grande/lee_fopen.php?code=">  
+       Server 7 <button type="button" class="btn btn-primary btn-sm" onclick="getDatos_x(7)">Run</button>
+       <h6><small>php 7.2 | sin laravel | fgets</small></h6>
+      <div class="form-group">
+        <label for="result_7">Result:</label>
+        <textarea class="form-control " style="font-size: 0.8rem;" rows="10" id="result_7"></textarea>
+      </div>
+
+     </div>
+
+     <div class="col">
+       <!-- Your second column here -->
+       <input type="text" class="form-control" id="server_8"  placeholder="server_8" value="http://127.0.0.1/challenge/leer_archivo_grande/busca_en_indices.php?code=">  
+       Server 8 <button type="button" class="btn btn-primary btn-sm" onclick="getDatos_x(8)">Run</button>
+       <h6><small>php 7.2 | sin laravel | busqyeda binaria en archivo indices</small></h6>
+      <div class="form-group">
+        <label for="result_8">Result:</label>
+        <textarea class="form-control " style="font-size: 0.8rem;" rows="10" id="result_8"></textarea>
+      </div>
+
+     </div>
+
+     
+
+</div>
+
+
+<div class="row">
+  <button type="button" class="btn btn-primary btn-sm" onclick="check_iguales()">Iguales?</button>  
+  <div class="resulado_igualdad">_</div>
+</div>
+
+
+
+
+</div>
+<br>
+<br>
+<br>
+<br>
+		
+<!-- jQuery library -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+
+<!-- Popper -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+
+<!-- Latest compiled and minified Bootstrap JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+
+
+<!-- Initialize Bootstrap functionality -->
+<script>
+
+function getDatos_1() 
+{
+  console.time("server_1");
+  let url = $("#server_1").val() + $("#zip_code").val()
+  console.log("buscando en: " + url)
+
+  fetch(url, {
+      method: 'GET',
+      headers: new Headers({
+                'Content-Type': 'application/json'
+                }),
+      // body: JSON.stringify(body)
+      })
+      .then(function(response) {
+        // console.log('response = ', response);
+        return response.json();
+      })
+      .then(function(data) {
+        console.log('data = ', data);
+        console.timeEnd("server_1");
+        $("#result_1").text(JSON.stringify(data))
+
+      })
+      .catch(function(err) {
+        console.error(err);
+      });
+
+}
+
+function getAllDatos_2() 
+{
+  let zip_codes = $("#zip_codes").val()
+  arr = zip_codes.split(",")
+
+  for(z in arr){
+    // console.log(arr[z])
+
+    // setTimeout(function(){
+
+        (function(code){ 
+          getDatos_2(code)
+          // console.log(code)          // 
+        })(arr[z]);
+        
+
+    // }, 900);
+
+  }
+}
+
+function getDatos_2(z='') 
+{
+  console.time("server_2");
+  let zip_code = (z=='')? $("#zip_code").val():z
+  let url = $("#server_2").val() + zip_code
+  console.log("buscando en: " + url)
+
+  fetch(url, {
+      method: 'GET',
+      headers: new Headers({
+                'Content-Type': 'application/json'
+                }),
+      // body: JSON.stringify(body)
+      })
+      .then(function(response) {
+        // console.log('response = ', response);
+        return response.json();
+      })
+      .then(function(data) {
+        console.log('data = ', data);
+        console.timeEnd("server_2");
+        $("#result_2").text(JSON.stringify(data))
+
+      })
+      .catch(function(err) {
+        console.error(err);
+      });
+
+}
+
+
+function getDatos_3() 
+{
+  console.time("server_3");
+  let url = $("#server_3").val() + $("#zip_code").val()
+  console.log("buscando en: " + url)
+
+  fetch(url, {
+      method: 'GET',
+      headers: new Headers({
+                'Content-Type': 'application/json'
+                }),
+      // body: JSON.stringify(body)
+      })
+      .then(function(response) {
+        // console.log('response = ', response);
+        return response.json();
+      })
+      .then(function(data) {
+        console.log('data = ', data);
+        console.timeEnd("server_3");
+        $("#result_3").text(JSON.stringify(data))
+
+      })
+      .catch(function(err) {
+        console.error(err);
+      });
+
+}
+
+function getDatos_x(server_id) 
+{
+  console.time("server_"+server_id);
+  let url = $("#server_"+server_id).val() + $("#zip_code").val()
+  console.log("buscando en: " + url)
+
+  fetch(url, {
+      method: 'GET',
+      headers: new Headers({
+                'Content-Type': 'application/json'
+                }),
+      // body: JSON.stringify(body)
+      })
+      .then(function(response) {
+        // console.log('response = ', response);
+        return response.json();
+      })
+      .then(function(data) {
+        console.log('data = ', data);
+        console.timeEnd("server_"+server_id);
+        $("#result_"+server_id).text(JSON.stringify(data))
+
+      })
+      .catch(function(err) {
+        console.error(err);
+      });
+
+}
+
+
+function check_iguales() 
+{
+
+ let res_1 = $("#result_1").text()
+ let res_2 = $("#result_2").text()
+
+ if(res_1 == res_2){
+    $(".resulado_igualdad").html('son iguales')
+ }else{
+    $(".resulado_igualdad").html('NO son iguales')
+ }
+  
+
+}
+
+
+</script>
